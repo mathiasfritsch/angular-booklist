@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component } from "@angular/core";
+import { Store } from "@ngrx/store";
 
-import { selectBookCollection, selectBooks } from './state/books.selectors';
 import {
-  retrievedBookList,
-  addBook,
-  removeBook,
-} from './state/books.actions';
-import { GoogleBooksService } from './book-list/books.service';
+  selectBookCollection,
+  selectBooks,
+  selectAllBooks,
+} from "./state/books.selectors";
+import { retrievedBookList, addBook, removeBook } from "./state/books.actions";
+import { GoogleBooksService } from "./book-list/books.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+  selector: "app-root",
+  templateUrl: "./app.component.html",
 })
 export class AppComponent {
-  books$ = this.store.select(selectBooks);
+  books$ = this.store.select(selectAllBooks);
+
   bookCollection$ = this.store.select(selectBookCollection);
 
   onAdd(bookId: string) {
@@ -25,10 +26,7 @@ export class AppComponent {
     this.store.dispatch(removeBook({ bookId }));
   }
 
-  constructor(
-    private booksService: GoogleBooksService,
-    private store: Store
-  ) {}
+  constructor(private booksService: GoogleBooksService, private store: Store) {}
 
   ngOnInit() {
     this.booksService
@@ -36,7 +34,6 @@ export class AppComponent {
       .subscribe((books) => this.store.dispatch(retrievedBookList({ books })));
   }
 }
-
 
 /*
 Use of this source code is governed by an MIT-style license that

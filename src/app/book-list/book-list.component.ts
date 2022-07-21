@@ -7,6 +7,9 @@ import {
   removeBook,
   addNewBook,
 } from "../state/books.actions";
+
+import { selectAllBooks } from "../state/books.selectors";
+import { state } from "@angular/animations";
 @Component({
   selector: "app-book-list",
   templateUrl: "./book-list.component.html",
@@ -15,6 +18,7 @@ import {
 export class BookListComponent {
   @Input() books: ReadonlyArray<Book> = [];
   @Output() add = new EventEmitter<string>();
+  public allBooks$ = this.store.select(selectAllBooks);
 
   constructor(private store: Store) {}
 
